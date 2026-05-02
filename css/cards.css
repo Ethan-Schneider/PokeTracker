@@ -1,0 +1,113 @@
+/* ── Card / Roller View ───────────────────────────────── */
+#card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(155px, 1fr));
+  gap: 0.75rem;
+}
+
+.poke-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 0.75rem 0.6rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.35rem;
+  transition: border-color 0.15s, background 0.15s;
+  contain: layout style;
+}
+
+.poke-card:hover { border-color: #6e7681; }
+
+.poke-card.card-caught { background: color-mix(in srgb, var(--caught-tint), var(--bg-card) 50%); border-color: var(--accent-green); }
+.poke-card.card-shiny  { background: color-mix(in srgb, var(--shiny-tint), var(--bg-card) 50%);  border-color: var(--accent-gold); }
+.poke-card.card-caught.card-shiny { background: color-mix(in srgb, var(--both-tint), var(--bg-card) 40%); border-color: var(--accent-gold); }
+
+/* Sprites row */
+.card-sprites {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.card-sprites img {
+  width: 60px;
+  height: 60px;
+  object-fit: contain;
+  image-rendering: pixelated;
+}
+
+.sprite-divider {
+  width: 1px;
+  height: 40px;
+  background: var(--border);
+  flex-shrink: 0;
+}
+
+/* Number + name */
+.card-number {
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  font-variant-numeric: tabular-nums;
+}
+
+.card-name {
+  font-size: 0.88rem;
+  font-weight: 600;
+  text-align: center;
+  line-height: 1.2;
+}
+
+/* Types */
+.card-types {
+  display: flex;
+  gap: 3px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+/* Action buttons */
+.card-actions {
+  display: flex;
+  gap: 4px;
+  margin-top: 0.25rem;
+  width: 100%;
+}
+
+.card-actions .btn-toggle {
+  flex: 1;
+  border-radius: var(--radius);
+  width: auto;
+  height: 30px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  gap: 3px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 6px;
+  border: 1px solid var(--border);
+  background: transparent;
+  color: var(--text-muted);
+  transition: background 0.15s, border-color 0.15s;
+}
+
+.card-actions .btn-toggle:hover { border-color: #6e7681; }
+
+.card-actions .btn-caught[aria-pressed="true"] {
+  background: var(--accent-green);
+  border-color: var(--accent-green);
+  color: #fff;
+}
+
+.card-actions .btn-shiny[aria-pressed="true"] {
+  background: var(--accent-gold);
+  border-color: var(--accent-gold);
+  color: #333;
+}
+
+@media (max-width: 400px) {
+  #card-grid { grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); }
+  .card-sprites img { width: 48px; height: 48px; }
+}

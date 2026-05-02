@@ -1,0 +1,126 @@
+/* ── Table View ───────────────────────────────────────── */
+#view-table { overflow-x: auto; }
+
+#pokemon-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.85rem;
+  min-width: 680px;
+}
+
+#pokemon-table thead {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background: var(--bg-secondary);
+}
+
+#pokemon-table th {
+  text-align: left;
+  padding: 0.55rem 0.75rem;
+  color: var(--text-muted);
+  font-weight: 600;
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  border-bottom: 1px solid var(--border);
+  white-space: nowrap;
+  user-select: none;
+}
+
+#pokemon-table th[data-sort] { cursor: pointer; }
+#pokemon-table th[data-sort]:hover { color: var(--text-primary); }
+#pokemon-table th.sort-asc::after  { content: ' ↑'; }
+#pokemon-table th.sort-desc::after { content: ' ↓'; }
+
+#pokemon-table td {
+  padding: 0.35rem 0.75rem;
+  border-bottom: 1px solid rgba(48, 54, 61, 0.5);
+  vertical-align: middle;
+}
+
+#pokemon-table tbody tr { transition: background 0.1s; }
+#pokemon-table tbody tr:hover { background: var(--bg-secondary); }
+
+/* Caught / shiny row tints */
+#pokemon-table tbody tr.row-caught         { background: var(--caught-tint); }
+#pokemon-table tbody tr.row-shiny          { background: var(--shiny-tint); }
+#pokemon-table tbody tr.row-caught.row-shiny { background: var(--both-tint); }
+
+#pokemon-table tbody tr.row-caught:hover         { background: color-mix(in srgb, var(--caught-tint), var(--bg-secondary) 60%); }
+#pokemon-table tbody tr.row-shiny:hover          { background: color-mix(in srgb, var(--shiny-tint), var(--bg-secondary) 60%); }
+
+/* Sprite cells */
+.sprite-cell {
+  width: calc(var(--sprite-size) + 8px);
+  text-align: center;
+  padding: 0.2rem 0.4rem;
+}
+
+.sprite-cell img {
+  width: var(--sprite-size);
+  height: var(--sprite-size);
+  object-fit: contain;
+  image-rendering: pixelated;
+  display: block;
+  margin: 0 auto;
+}
+
+/* ID cell */
+.id-cell {
+  color: var(--text-muted);
+  font-variant-numeric: tabular-nums;
+  width: 52px;
+}
+
+/* Name cell */
+.name-cell { font-weight: 500; }
+
+/* Gen cell */
+.gen-cell {
+  color: var(--text-muted);
+  text-align: center;
+  width: 48px;
+}
+
+/* Types cell */
+.types-cell { white-space: nowrap; }
+.types-cell .type-badge + .type-badge { margin-left: 3px; }
+
+/* Toggle buttons in table */
+.toggle-cell { text-align: center; width: 72px; }
+
+.btn-toggle {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  border: 2px solid var(--border);
+  background: transparent;
+  font-size: 1rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  transition: background 0.15s, border-color 0.15s, transform 0.1s;
+  color: var(--text-muted);
+}
+
+.btn-toggle:hover { transform: scale(1.1); border-color: #6e7681; }
+
+.btn-toggle.btn-caught[aria-pressed="true"] {
+  background: var(--accent-green);
+  border-color: var(--accent-green);
+  color: #fff;
+}
+
+.btn-toggle.btn-shiny[aria-pressed="true"] {
+  background: var(--accent-gold);
+  border-color: var(--accent-gold);
+  color: #333;
+}
+
+/* Hide sprite columns on narrow screens */
+@media (max-width: 600px) {
+  .sprite-cell { display: none; }
+  #pokemon-table { min-width: 0; }
+}

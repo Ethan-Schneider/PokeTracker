@@ -1,0 +1,131 @@
+/* ── Dex View ─────────────────────────────────────────── */
+#view-dex { display: flex; flex-direction: column; }
+
+/* ── Normal / Shiny mode bar ─────────────────────────── */
+#dex-mode-bar {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.6rem 0 0.9rem;
+}
+
+#dex-mode-toggle {
+  display: flex;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+
+#dex-mode-toggle button {
+  border: none;
+  border-radius: 0;
+  padding: 0.4rem 1rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+#dex-mode-toggle button.active {
+  background: var(--accent-red);
+  color: #fff;
+}
+
+#btn-dex-shiny.active {
+  background: var(--accent-gold) !important;
+  color: #333 !important;
+}
+
+.dex-mode-hint {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+
+/* ── Generation sections ──────────────────────────────── */
+#dex-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1.75rem;
+}
+
+.gen-header {
+  display: flex;
+  align-items: baseline;
+  gap: 0.75rem;
+  margin-bottom: 0.5rem;
+  padding-bottom: 0.4rem;
+  border-bottom: 2px solid var(--border);
+}
+
+.gen-title {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  white-space: nowrap;
+}
+
+.gen-region {
+  font-weight: 400;
+  color: var(--text-muted);
+}
+
+.gen-stat {
+  margin-left: auto;
+  font-size: 0.78rem;
+  white-space: nowrap;
+}
+
+.gen-caught { color: var(--accent-green); }
+.gen-shiny  { color: var(--accent-gold); }
+
+/* ── Sprite strip ─────────────────────────────────────── */
+.gen-sprites {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2px;
+}
+
+/* ── Individual sprite tile ───────────────────────────── */
+.dex-sprite {
+  position: relative;
+  width: 60px;
+  height: 60px;
+  border-radius: 4px;
+  border: 2px solid transparent;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: border-color 0.12s, background 0.12s, opacity 0.12s;
+  flex-shrink: 0;
+}
+
+.dex-sprite:hover:not(.is-locked) { background: var(--bg-secondary); }
+
+.dex-sprite img {
+  width: 56px;
+  height: 56px;
+  object-fit: contain;
+  image-rendering: pixelated;
+  pointer-events: none;
+  display: block;
+}
+
+/* Normal caught: green border */
+.dex-sprite.is-caught { border-color: var(--accent-green); }
+
+/* Shiny caught: gold border */
+.dex-sprite.is-shiny { border-color: var(--accent-gold); }
+
+/* Both caught + shiny: blue border */
+.dex-sprite.is-both { border-color: var(--accent-blue); }
+
+/* Shiny-locked: greyed out, no pointer */
+.dex-sprite.is-locked {
+  opacity: 0.35;
+  cursor: not-allowed;
+  filter: grayscale(0.6);
+}
+
+@media (max-width: 480px) {
+  .dex-sprite { width: 48px; height: 48px; }
+  .dex-sprite img { width: 44px; height: 44px; }
+}

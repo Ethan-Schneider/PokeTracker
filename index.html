@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pokémon Shiny Tracker</title>
+  <link rel="icon" type="image/svg+xml" href="./assets/pokeball.svg">
+  <!-- Apply saved theme before CSS renders to avoid flash -->
+  <script>
+    (function() {
+      var t = localStorage.getItem('pokemonTrackerTheme');
+      if (t === 'light') document.documentElement.setAttribute('data-theme', 'light');
+    })();
+  </script>
+  <link rel="stylesheet" href="./css/style.css">
+  <link rel="stylesheet" href="./css/cards.css">
+  <link rel="stylesheet" href="./css/dex.css">
+  <link rel="stylesheet" href="./css/hunt.css">
+  <link rel="stylesheet" href="./css/boxes.css">
+</head>
+<body>
+
+  <!-- ── Header ── -->
+  <header id="site-header">
+    <div id="logo">
+      <img src="./assets/pokeball.svg" alt="">
+      Shiny Tracker
+    </div>
+
+    <div id="stats-bar">
+      <span id="stat-caught">Caught: 0 / —</span>
+      <span id="stat-shiny">Shiny: 0 / —</span>
+      <span id="stat-both">Both: 0 / —</span>
+    </div>
+
+    <div id="data-actions">
+      <button id="btn-theme" title="Toggle light / dark mode">☀ Light</button>
+      <button id="btn-export" title="Download your tracker data as JSON">Export JSON</button>
+      <button id="btn-import" title="Load a previously exported JSON file">Import JSON</button>
+      <input id="import-file-input" type="file" accept=".json" hidden>
+      <button id="btn-reset" class="danger" title="Clear all caught and shiny data">Reset All</button>
+    </div>
+  </header>
+
+  <!-- ── Controls Bar ── -->
+  <div id="controls-bar">
+
+    <div id="view-toggle" role="group" aria-label="View mode">
+      <button id="btn-view-cards"  aria-pressed="true">Cards</button>
+      <button id="btn-view-dex"    aria-pressed="false">Dex</button>
+      <button id="btn-view-boxes"  aria-pressed="false">Boxes</button>
+      <button id="btn-view-hunt"   aria-pressed="false">Hunt</button>
+    </div>
+
+    <input id="search-input" type="search" placeholder="Search name or #…" autocomplete="off" aria-label="Search Pokémon">
+
+    <select id="filter-gen" aria-label="Filter by generation">
+      <option value="0">All Gens</option>
+      <option value="1">Gen 1 (Kanto)</option>
+      <option value="2">Gen 2 (Johto)</option>
+      <option value="3">Gen 3 (Hoenn)</option>
+      <option value="4">Gen 4 (Sinnoh)</option>
+      <option value="5">Gen 5 (Unova)</option>
+      <option value="6">Gen 6 (Kalos)</option>
+      <option value="7">Gen 7 (Alola)</option>
+      <option value="8">Gen 8 (Galar)</option>
+      <option value="9">Gen 9 (Paldea)</option>
+    </select>
+
+    <select id="filter-type" aria-label="Filter by type">
+      <option value="">All Types</option>
+      <option value="normal">Normal</option>
+      <option value="fire">Fire</option>
+      <option value="water">Water</option>
+      <option value="electric">Electric</option>
+      <option value="grass">Grass</option>
+      <option value="ice">Ice</option>
+      <option value="fighting">Fighting</option>
+      <option value="poison">Poison</option>
+      <option value="ground">Ground</option>
+      <option value="flying">Flying</option>
+      <option value="psychic">Psychic</option>
+      <option value="bug">Bug</option>
+      <option value="rock">Rock</option>
+      <option value="ghost">Ghost</option>
+      <option value="dragon">Dragon</option>
+      <option value="dark">Dark</option>
+      <option value="steel">Steel</option>
+      <option value="fairy">Fairy</option>
+    </select>
+
+    <select id="filter-caught" aria-label="Filter by caught status">
+      <option value="all">All</option>
+      <option value="caught">Caught ✓</option>
+      <option value="not-caught">Not Caught</option>
+    </select>
+
+    <select id="filter-shiny" aria-label="Filter by shiny status">
+      <option value="all">All</option>
+      <option value="shiny">Shiny ★ Caught</option>
+      <option value="not-shiny">Shiny Missing</option>
+    </select>
+
+    <button id="btn-sprite-mode" title="Switch to B&amp;W animated sprites">🎬 Animated</button>
+
+  </div>
+
+  <!-- ── Main Content ── -->
+  <main id="main-content">
+
+    <!-- Card View -->
+    <section id="view-cards" class="view">
+      <div id="card-grid">
+        <p style="color:var(--text-muted);padding:2rem">Loading…</p>
+      </div>
+    </section>
+
+    <!-- Dex View (grouped by generation, sprites only) -->
+    <section id="view-dex" class="view hidden">
+      <div id="dex-mode-bar">
+        <div id="dex-mode-toggle" role="group" aria-label="Sprite mode">
+          <button id="btn-dex-normal" class="active" aria-pressed="true">● Normal</button>
+          <button id="btn-dex-shiny" aria-pressed="false">★ Shiny</button>
+        </div>
+        <span class="dex-mode-hint">Click a sprite to toggle caught · Grayed = shiny locked</span>
+      </div>
+      <div id="dex-container"></div>
+    </section>
+
+    <!-- Boxes View -->
+    <section id="view-boxes" class="view hidden">
+      <div id="box-mode-bar">
+        <div id="box-mode-toggle" role="group" aria-label="Sprite mode">
+          <button id="btn-box-normal" class="active" aria-pressed="true">● Normal</button>
+          <button id="btn-box-shiny" aria-pressed="false">★ Shiny</button>
+        </div>
+        <span class="dex-mode-hint">Click a sprite to toggle caught · Grayed = shiny locked</span>
+      </div>
+      <div id="box-nav">
+        <button id="btn-box-prev" aria-label="Previous box">◀</button>
+        <span id="box-label">Box 1 / —</span>
+        <button id="btn-box-next" aria-label="Next box">▶</button>
+      </div>
+      <div id="box-grid"></div>
+    </section>
+
+    <!-- Hunt View -->
+    <section id="view-hunt" class="view hidden">
+      <p style="color:var(--text-muted);font-size:0.82rem;padding:0.5rem 0 0">
+        Track which Pokémon you're currently hunting. Click a slot to assign, × to remove.
+        Shiny-locked Pokémon cannot be assigned.
+      </p>
+      <div id="hunt-board"></div>
+    </section>
+
+  </main>
+
+  <!-- Toast notification -->
+  <div id="toast" aria-live="polite" hidden></div>
+
+  <!-- Hunt picker modal -->
+  <div id="hunt-modal" class="modal hidden" role="dialog" aria-modal="true" aria-label="Choose a Pokémon to hunt">
+    <div class="modal-panel">
+      <div class="modal-header">
+        <h3>Choose a Pokémon to Hunt</h3>
+        <button id="hunt-modal-close" aria-label="Close">×</button>
+      </div>
+      <input id="hunt-search" type="search" placeholder="Search name or #…" autocomplete="off">
+      <div id="picker-grid"></div>
+    </div>
+  </div>
+
+  <script type="module">
+    import { initApp } from './js/ui.js';
+    initApp();
+  </script>
+
+</body>
+</html>
