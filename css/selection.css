@@ -1,0 +1,24 @@
+/* ── Rubber-band selection box ────────────────────────── */
+#selection-box {
+  position: fixed;        /* viewport-relative, same space as getBoundingClientRect */
+  border: 2px dashed var(--accent-red);
+  background: rgba(204, 0, 0, 0.08);
+  border-radius: 3px;
+  pointer-events: none;   /* never intercepts the mouse events we need */
+  z-index: 500;           /* above everything including the modal */
+}
+
+/* Cursor and text-selection lockout while dragging */
+body.drag-selecting,
+body.drag-selecting * {
+  cursor: crosshair !important;
+  user-select: none !important;
+}
+
+/* Highlight on dex/box sprite tiles within the selection box */
+.dex-sprite.drag-selected {
+  outline: 2px solid var(--accent-red);
+  outline-offset: -1px;
+  opacity: 0.75;
+}
+

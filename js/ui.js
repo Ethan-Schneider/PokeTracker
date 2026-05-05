@@ -7,6 +7,8 @@ import { renderDex,   handleDexToggle }                 from './dex.js';
 import { renderHunt,  handleHuntClick, initHuntEvents } from './hunt.js';
 import { renderBoxes, handleBoxToggle,
          navigateBox, resetBoxCache }                   from './boxes.js';
+import { initSelection }                               from './selection.js';
+import { preloadAllSprites }                           from './preloader.js';
 
 export const AppState = {
   pokemon:        [],
@@ -251,6 +253,7 @@ function wireEvents() {
   document.getElementById('box-grid').addEventListener('click', handleBoxToggle);
   document.getElementById('hunt-board').addEventListener('click', handleHuntClick);
   initHuntEvents();
+  initSelection();
 
   document.getElementById('btn-theme').addEventListener('click', toggleTheme);
   document.getElementById('btn-sprite-mode').addEventListener('click', toggleSpriteMode);
@@ -329,4 +332,5 @@ export async function initApp() {
   }
 
   renderActiveView();
+  preloadAllSprites(AppState.pokemon);
 }

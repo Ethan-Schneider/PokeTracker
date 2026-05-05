@@ -236,6 +236,19 @@ select option { background: var(--bg-card); color: var(--text-primary); }
 .type-badge.steel    { background: var(--type-steel); color: #333; text-shadow: none; }
 .type-badge.fairy    { background: var(--type-fairy); }
 
+/* ── Sprite image loading ────────────────────────────── */
+/*
+  color:transparent hides alt text while an image is loading without
+  affecting the image itself once it arrives.
+*/
+.dex-sprite img,
+.poke-card img,
+.hunt-slot img,
+.picker-tile img,
+.box-empty-cell img {
+  color: transparent;
+}
+
 /* ── Toast ────────────────────────────────────────────── */
 #toast {
   position: fixed;
